@@ -1,6 +1,4 @@
 div#efbad92069e12a5f085de0746b853ab {
-  --discourse-watermark-default-color: #{dark-light-choose(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.12))};
-  --discourse-watermark-default-blend-mode: #{dark-light-choose(multiply, screen)};
   position: absolute;
   top: var(--header-offset, 0);
   left: 0;

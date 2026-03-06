@@ -1,0 +1,10 @@
+:root {
+  --discourse-watermark-default-color: #{dark-light-choose(
+      rgba(0, 0, 0, 0.04),
+      rgba(255, 255, 255, 0.04)
+    )};
+  --discourse-watermark-default-blend-mode: #{dark-light-choose(
+      multiply,
+      screen
+    )};
+}
