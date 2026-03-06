@@ -18,7 +18,9 @@ export default class WatermarkBackground extends Component {
     "page:changed",
     // updates the watermark again if the header of the topic was updated
     // in case the category or tags were edited
-    "header:update-topic"
+    "header:update-topic",
+    // Discourse triggers this when the interface switches between light/dark.
+    "interface-color:changed"
   ];
 
   onlyInCategories = settings.only_in_categories
@@ -37,18 +39,32 @@ export default class WatermarkBackground extends Component {
     .map((v) => new RegExp(v));
 
   #domElement;
+  #darkModeMediaQuery;
+  #handleSystemColorSchemeChange = () => this.refreshWatermark();
 
   constructor() {
     super(...arguments);
     this.REFRESH_EVENTS.forEach((eventName) =>
       this.appEvents.on(eventName, this, this.refreshWatermark)
     );
+
+    if (window.matchMedia) {
+      this.#darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      this.#darkModeMediaQuery.addEventListener(
+        "change",
+        this.#handleSystemColorSchemeChange
+      );
+    }
   }
 
   willDestroy() {
     super.willDestroy(...arguments);
     this.REFRESH_EVENTS.forEach((eventName) =>
       this.appEvents.off(eventName, this, this.refreshWatermark)
+    );
+    this.#darkModeMediaQuery?.removeEventListener(
+      "change",
+      this.#handleSystemColorSchemeChange
     );
   }
 
